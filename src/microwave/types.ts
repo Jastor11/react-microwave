@@ -9,6 +9,7 @@ export type MicrowaveReporters = {
 export type MicrowaveConfig = {
   appName?: string
   verbose?: boolean
+  debug?: boolean
   reporters?: Partial<MicrowaveReporters> // not using this at the moment
   // add more testing config here later
 }

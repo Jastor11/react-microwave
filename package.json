@@ -51,13 +51,7 @@
     "name": "Jeff Astor",
     "email": "jeff@astor.io"
   },
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@github.com:jastor11/react-microwave.git",
-    "directory": "jastor11/react-microwave"
-  },
   "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com/jastor11"
+    "access": "public"
   }
 }
