@@ -79,6 +79,10 @@ export class Microwave {
     this.appName = config.appName ?? this.appName
   }
 
+  public getConfig() {
+    return this.config
+  }
+
   public registerTestCase(suiteName: string, testCase: { description: string; test: MicrowaveTestCallback }) {
     const suite = this.getMostRecentSuite(suiteName)
     if (suite) return suite.tests.push(testCase)
@@ -274,7 +278,9 @@ export class Microwave {
 }
 
 const microwave = Microwave.create()
+
 export const updateConfig = (config: MicrowaveConfig) => microwave.updateConfig(config)
+export const getConfig = () => microwave.getConfig()
 export const suite = microwave.suite
 export const test = () => suite()
 export const exec = microwave.exec
