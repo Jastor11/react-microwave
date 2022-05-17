@@ -8,7 +8,7 @@ const tsupOptions = defineConfig((options) => {
   const isProd = options.env?.NODE_ENV.toLowerCase() === "production"
 
   const config = {
-    name: "Microwave React testing library compilation with TS-UP",
+    name: "React Microwave testing framework compilation with TS-UP",
     entry: options.entry ?? ["src/index.ts"],
     clean: options.clean ?? false,
     minify: options.minify ?? false,

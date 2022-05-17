@@ -1,7 +1,7 @@
 {
   "name": "react-microwave",
   "version": "0.0.1",
-  "description": "A testing framework designed entirely for executing React applications specs directly in the browser.",
+  "description": "A testing framework designed entirely for executing React application specs directly in the browser.",
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

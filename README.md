@@ -1,8 +1,6 @@
 # React Microwave Testing Framework · [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Jastor11/microwave/blob/master/LICENSE) [![Test Status](https://github.com/Jastor11/microwave/actions/workflows/test.yml/badge.svg)](https://github.com/Jastor11/microwave/actions/workflows/test.yml)
 
-<!-- ![Package Status](https://github.com/jastor11/microwave/workflows/Package/badge.svg) ![Test Status](https://github.com/jastor11/microwave/workflows/Test/badge.svg) -->
-
-A testing framework designed entirely for executing React applications specs directly in the browser.
+A testing framework designed entirely for executing React application specs directly in the browser.
 
 The Microwave testing framework has a very narrow focus. It is meant - and only meant - to run React application tests and targets only the browser environment. It's a re-write and expansion of the fantastic [uvu](https://github.com/lukeed/uvu) library, exposing test result internals as JSON for use in reports and the like.
 
