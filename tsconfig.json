@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Microwave TS Config",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "rootDir": ".",
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "isolatedModules": false,
+    "downlevelIteration": true,
+    "target": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext"        
+  },
+  "exclude": ["node_modules", "dist", "coverage"], 
+  "include": ["**/*.ts", "**/*.tsx"]
+}

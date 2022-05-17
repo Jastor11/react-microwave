@@ -1,0 +1,50 @@
+// Workspace settings
+{
+  "window.zoomLevel": 0,
+  "editor.fontFamily": "'IBM Plex Mono', 'Source Code Pro', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontSize": 12,
+  "editor.fontLigatures": true,
+  "editor.insertSpaces": false,
+  // "editor.minimap.enabled": false,
+  "editor.minimap.enabled": true,
+  "editor.quickSuggestionsDelay": 100,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.formatOnPaste": false,
+  "editor.suggestFontSize": 11,
+  "workbench.colorTheme": "One Dark Vivid",
+  "workbench.colorCustomizations": {
+      "editor.background": "#2D3039"
+  },  
+  "workbench.startupEditor": "newUntitledFile",
+  "eslint.options": {
+      "files.exclude": {
+          "**/.git": true,
+          "**/.DS_Store": true,
+          "**/*.{css,less,sass,scss}": true,
+          "node_modules/**": true
+      }
+  },
+  "extensions.ignoreRecommendations": true,
+  "javascript.referencesCodeLens.enabled": false,
+  "terminal.integrated.cursorStyle": "line",
+  "launch": {
+      "version": "0.2.0",
+      "configurations": [
+          {
+              "type": "node",
+              "request": "launch",
+              "name": "Launch Program",
+              "program": "${workspaceRoot}/node_modules/babel-cli/bin/babel-node.js",
+              "stopOnEntry": false,
+              "args": [
+                  "${file}"
+              ]
+          }
+      ]
+  },
+  "workbench.fontAliasing": "antialiased",
+  "files.exclude": {
+    // "node_modules/": true,
+    // "**/**/node_modules/": true
+  }
+}

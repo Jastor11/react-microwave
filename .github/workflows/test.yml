@@ -1,0 +1,26 @@
+name: Test CI
+
+on: # rebuild any PRs and main branch changes
+  pull_request:
+    branches:
+      - main
+      - "releases/*"
+  push:
+    branches:
+      - main
+      - "releases/*"
+
+jobs:
+  test:
+    name: Execute tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check
+        uses: actions/checkout@v3
+
+      - name: Install deps
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
