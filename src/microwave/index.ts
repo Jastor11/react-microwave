@@ -205,6 +205,8 @@ export class Microwave {
       const testSuiteSummary = new TestSuiteSummary(suite.suiteName, order, tests.length)
 
       if (testsToRun.length) {
+        // set suite name on ctx
+        ctx.__suite__ = suite.suiteName
         // run before hooks
         for (hook of before) await hook(ctx)
 
@@ -228,6 +230,8 @@ export class Microwave {
             continue
           }
 
+          // set suite name on ctx
+          ctx.__test__ = testCase.description
           // run beforeEach hooks
           for (hook of beforeEach) await hook(ctx)
 
