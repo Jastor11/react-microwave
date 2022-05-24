@@ -1,6 +1,6 @@
 // Workspace settings
 {
-  "window.zoomLevel": 0,
+  "window.zoomLevel": -1,
   "editor.fontFamily": "'IBM Plex Mono', 'Source Code Pro', Menlo, Monaco, 'Courier New', monospace",
   "editor.fontSize": 12,
   "editor.fontLigatures": true,

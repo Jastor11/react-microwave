@@ -22,10 +22,15 @@ export interface MicrowaveBaseHook<T> {
   each?: (hook: MicrowaveTestBaseCallback<T>) => void
 }
 
-export interface RegisterMicrowaveTestCase<T> {
-  (description: string, test: MicrowaveTestBaseCallback<T>): void
-  only(description: string, test: MicrowaveTestBaseCallback<T>): void
-  skip(description?: string, test?: MicrowaveTestBaseCallback<T>): void
+export interface MicrowaveExclusionFunctions<T> {
+  only(description: string, cb: MicrowaveTestBaseCallback<T>): void
+  skip(description?: string, cb?: MicrowaveTestBaseCallback<T>): void
+}
+
+export interface RegisterMicrowaveTestCase<T> extends MicrowaveExclusionFunctions<T> {
+  (description: string, cb: MicrowaveTestBaseCallback<T>): void
+  // only(description: string, cb: MicrowaveTestBaseCallback<T>): void
+  // skip(description?: string, cb?: MicrowaveTestBaseCallback<T>): void
   before: MicrowaveBaseHook<T>
   after: MicrowaveBaseHook<T>
   run(): IMicrowaveSuite // basically works as register now instead
@@ -37,7 +42,7 @@ export type MicrowaveHook<T = MicrowaveContext> = MicrowaveBaseHook<T>
 
 export type RegisterTestCase<T = MicrowaveContext> = (
   suiteName: string,
-  testCase: { description: string; test: MicrowaveTestCallback<T> }
+  testCase: { description: string; cb: MicrowaveTestCallback<T> }
 ) => void
 
 export type RegisterHook<T = MicrowaveContext> = (
@@ -49,7 +54,7 @@ export type RegisterHook<T = MicrowaveContext> = (
 export type RegisterExclusion<T = MicrowaveContext> = (
   suiteName: string,
   exclusionType: MicrowaveSuiteExclusionType<T>,
-  testCase: { description: string; test: MicrowaveTestCallback<T> }
+  testCase: { description: string; cb: MicrowaveTestCallback<T> }
 ) => void
 
 export type MicrowaveSuiteHooks<T = MicrowaveContext> = {
@@ -60,12 +65,15 @@ export type MicrowaveSuiteHooks<T = MicrowaveContext> = {
 }
 
 export type MicrowaveSuiteExclusions<T = MicrowaveContext> = {
-  only: Array<{ description: string; test: MicrowaveTestCallback<T> }>
-  skip: Array<{ description: string; test: MicrowaveTestCallback<T> }>
+  only: Array<{ description: string; cb: MicrowaveTestCallback<T> }>
+  skip: Array<{ description: string; cb: MicrowaveTestCallback<T> }>
 }
 
 export type MicrowaveSuiteHookType = keyof MicrowaveSuiteHooks
 export type MicrowaveSuiteExclusionType<T = MicrowaveContext> = keyof MicrowaveSuiteExclusions<T>
+export interface MicrowaveSuiteTestCase<T = MicrowaveContext> extends Partial<MicrowaveExclusionFunctions<T>> {
+  (description: string, cb: MicrowaveTestCallback<T>): void
+}
 
 export interface IMicrowaveSuite<T = MicrowaveContext> {
   suiteName: string
@@ -74,7 +82,7 @@ export interface IMicrowaveSuite<T = MicrowaveContext> {
   registerHook: RegisterHook
   registerExclusion: RegisterExclusion
 
-  test: (description: string, test: MicrowaveTestCallback<T>) => void
+  test: MicrowaveSuiteTestCase<T>
   before: MicrowaveBaseHook<T>
   after: MicrowaveBaseHook<T>
   beforeEach: MicrowaveBaseHook<T>
@@ -87,7 +95,7 @@ export type MicrowaveSuiteStore<T = MicrowaveContext> = MicrowaveSuiteHooks &
     order: number
     ctx: T
     suite: IMicrowaveSuite
-    tests: { description: string; test: MicrowaveTestCallback }[]
+    tests: { description: string; cb: MicrowaveTestCallback<T> }[]
     hasOnly: boolean
   }
 

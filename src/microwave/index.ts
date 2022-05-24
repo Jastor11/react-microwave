@@ -83,7 +83,7 @@ export class Microwave {
     return this.config
   }
 
-  public registerTestCase(suiteName: string, testCase: { description: string; test: MicrowaveTestCallback }) {
+  public registerTestCase(suiteName: string, testCase: { description: string; cb: MicrowaveTestCallback }) {
     const suite = this.getMostRecentSuite(suiteName)
     if (suite) return suite.tests.push(testCase)
 
@@ -104,7 +104,7 @@ export class Microwave {
   public registerExclusion(
     suiteName: string,
     exclusionType: "skip" | "only",
-    testCase: { description: string; test: MicrowaveTestCallback }
+    testCase: { description: string; cb: MicrowaveTestCallback }
   ) {
     const suite = this.getMostRecentSuite(suiteName)
     if (suite) return suite[exclusionType].push(testCase)
@@ -129,7 +129,7 @@ export class Microwave {
       mostRecentQueue.push(suiteName)
     }
 
-    const ctx = { __suite__: suiteName, __test__: "" }
+    const ctx = { __suite__: suiteName, __test__: "" } as MicrowaveContext
     if (!Array.isArray(this.MICROWAVE_SUITES[suiteName])) {
       this.MICROWAVE_SUITES[suiteName] = []
     }
@@ -190,7 +190,8 @@ export class Microwave {
     // reuse variable for iterating over hooks
     let hook: any
     for (const existingTestSuite of suitesToExec) {
-      const { suite, order, tests, ctx } = existingTestSuite
+      const { suite, order, tests } = existingTestSuite
+      const ctx = existingTestSuite.ctx as MicrowaveContext
       // get hooks
       const { before, beforeEach, after, afterEach } = existingTestSuite
       // get exclusions
@@ -236,7 +237,7 @@ export class Microwave {
           for (hook of beforeEach) await hook(ctx)
 
           try {
-            await testCase.test(ctx)
+            await testCase.cb(ctx)
           } catch (e) {
             results.e = format(testCase.description, e, suite.suiteName)
             results.status = "failed"
