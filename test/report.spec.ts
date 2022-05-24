@@ -1,8 +1,6 @@
-import { expect, jest, test, describe } from "@jest/globals"
+import { expect, test, describe } from "@jest/globals"
 import * as report from "../src/microwave/report"
 import * as types from "../src/microwave/types"
-// import { suite, exec, updateConfig } from "../src/microwave"
-// import { MicrowaveSuite } from "../src/microwave/suite"
 
 const { MicrowaveReport, TestSuiteSummary, TestCaseSummary } = report
 
@@ -13,8 +11,6 @@ const failingTest = (name = "", e = "error") => ({
   e,
 })
 const skippedTest = (name = "") => ({ ...passingTest(name), status: "skipped" as types.TestCaseResultsStatus })
-
-// const createTestSuite1 = () => Object.fromEntries()
 
 const sampleTestsSkeleton = {
   "test suite 1": {
@@ -44,8 +40,6 @@ const samplePassingTests = Object.fromEntries(
   ])
 )
 
-// console.log(samplePassingTests)
-
 const sampleFailingTests = Object.fromEntries(
   Object.entries(sampleTestsSkeleton).map(([suiteName, suite]) => [
     suiteName,
@@ -62,11 +56,18 @@ const sampleSkippedTests = Object.fromEntries(
 
 const sampleOnlyTests = { ...sampleSkippedTests, "test suite 3": { ...samplePassingTests["test suite 3"] } }
 
+const sampleFailPassOnlyComboTests = {
+  ...sampleSkippedTests,
+  "test suite 3": { ...samplePassingTests["test suite 3"] },
+  "test suite 4": { ...sampleFailingTests["test suite 4"] },
+}
+
 type TestsSample =
   | typeof samplePassingTests
   | typeof sampleFailingTests
   | typeof sampleSkippedTests
   | typeof sampleOnlyTests
+  | typeof sampleFailPassOnlyComboTests
 
 function processTests(testsMapping: TestsSample, reportName = "summarize stats") {
   const report = new MicrowaveReport(reportName)
@@ -113,37 +114,6 @@ describe("MicrowaveReport", () => {
     expect(json.stats.failed).toBe(0)
     expect(json.stats.passed).toBe(10)
     expect(json.stats.skipped).toBe(0)
-    // const report = new MicrowaveReport("summarize stats")
-
-    // const suiteNames = Object.keys(samplePassingTests)
-    // expect(suiteNames.length).toBe(4)
-
-    // for (let i = 0; i < suiteNames.length; i++) {
-    //   const suiteName = suiteNames[i]
-    //   const testCaseDescriptions = Object.keys(samplePassingTests[suiteName])
-    //   const testSuiteSummary = new TestSuiteSummary(suiteName, i, testCaseDescriptions.length)
-
-    //   for (let j = 0; j < testCaseDescriptions.length; j++) {
-    //     const desc = testCaseDescriptions[j]
-    //     const testCaseSummary = new TestCaseSummary(j, desc, suiteName)
-
-    //     const testCaseResults = samplePassingTests[suiteName][desc]
-    //     testCaseSummary.processTestCaseResults(testCaseResults)
-    //     testSuiteSummary.processTestCaseResultsSummary(testCaseSummary)
-    //   }
-
-    //   testSuiteSummary.finalizeSummary()
-    //   report.processTestSuiteSummary(testSuiteSummary)
-    // }
-
-    // report.finalizeReport()
-
-    // const json = report.toJson()
-
-    // expect(json.stats.total).toBe(10)
-    // expect(json.stats.failed).toBe(0)
-    // expect(json.stats.passed).toBe(10)
-    // expect(json.stats.skipped).toBe(0)
   })
 
   test("report calculates failing stats correctly", () => {
@@ -177,5 +147,16 @@ describe("MicrowaveReport", () => {
     expect(json.stats.failed).toBe(0)
     expect(json.stats.passed).toBe(1)
     expect(json.stats.skipped).toBe(9)
+  })
+
+  test("report calculates fail-pass-only stats correctly", () => {
+    const report = processTests(sampleFailPassOnlyComboTests, "combo")
+
+    const json = report.toJson()
+
+    expect(json.stats.total).toBe(10)
+    expect(json.stats.failed).toBe(2)
+    expect(json.stats.passed).toBe(1)
+    expect(json.stats.skipped).toBe(7)
   })
 })
