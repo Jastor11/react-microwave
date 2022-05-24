@@ -195,24 +195,39 @@ export class Microwave {
       // get hooks
       const { before, beforeEach, after, afterEach } = existingTestSuite
       // get exclusions
+      // const testsMapping = tests.reduce((acc, curr) => {
+      //   return { ...acc, [curr.description]: false}
+      // }, {})
       const { only, skip } = existingTestSuite
-      const skipMapping = skip.reduce((acc, curr) => {
+      const onlyMapping = only.reduce((acc, curr) => {
         return { ...acc, [curr.description]: true }
+      }, {})
+      const registeredSkipMapping = skip.reduce((acc, curr) => {
+        return { ...acc, [curr.description]: true }
+      }, {})
+      const skipMapping = tests.reduce((acc, curr) => {
+        const desc = curr.description
+        // if explicitly skipped, skip it - otherwise skip it if runOnly is on and its not in the onlyMapping
+        return { ...acc, [desc]: (registeredSkipMapping as any)[desc] || runOnly ? !(onlyMapping as any)[desc] : false }
       }, {})
       // filter tests to run when dealing with onlys
       const testsToRun = runOnly ? only : tests
 
       // start suite timer
       const testSuiteSummary = new TestSuiteSummary(suite.suiteName, order, tests.length)
+      // const testSuiteSummary = new TestSuiteSummary(suite.suiteName, order, testsToRun.length)
 
-      if (testsToRun.length) {
+      // if (testsToRun.length) {
+      if (tests.length) {
         // set suite name on ctx
         ctx.__suite__ = suite.suiteName
         // run before hooks
         for (hook of before) await hook(ctx)
 
-        for (let testCaseOrder = 0; testCaseOrder < testsToRun.length; testCaseOrder++) {
-          const testCase = testsToRun[testCaseOrder]
+        // for (let testCaseOrder = 0; testCaseOrder < testsToRun.length; testCaseOrder++) {
+        for (let testCaseOrder = 0; testCaseOrder < tests.length; testCaseOrder++) {
+          // const testCase = testsToRun[testCaseOrder]
+          const testCase = tests[testCaseOrder]
           // start timer
           const testCaseSummary = new TestCaseSummary(testCaseOrder, testCase.description, suite.suiteName)
           let results = {

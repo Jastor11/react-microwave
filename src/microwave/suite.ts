@@ -25,8 +25,14 @@ export class MicrowaveSuite implements IMicrowaveSuite {
     const microwaveSuite = new MicrowaveSuite(suiteName, registerTestCase, registerHook, registerExclusion)
     microwaveSuite.before.each = microwaveSuite.beforeEach
     microwaveSuite.after.each = microwaveSuite.afterEach
-    microwaveSuite.test.only = microwaveSuite.only
-    microwaveSuite.test.skip = microwaveSuite.skip
+    // microwaveSuite.test.only = microwaveSuite.only
+    microwaveSuite.test.only = (description: string, cb: MicrowaveTestCallback) => {
+      registerExclusion(suiteName, "only", { description, cb })
+    }
+    // microwaveSuite.test.skip = microwaveSuite.skip
+    microwaveSuite.test.skip = (description: string, cb: MicrowaveTestCallback) => {
+      registerExclusion(suiteName, "skip", { description, cb })
+    }
     return microwaveSuite
   }
 
@@ -62,13 +68,23 @@ export class MicrowaveSuite implements IMicrowaveSuite {
     this.registerHook(this.suiteName, "afterEach", cb)
   }
 
-  public only = (description: string, cb: MicrowaveTestCallback) => {
-    this.registerExclusion(this.suiteName, "only", { description, cb })
+  public only = () => {
+    // ensure all tests in this suite are registered as only
+    // this.registerExclusion(this.suiteName, "only")
   }
 
-  public skip = (description: string, cb: MicrowaveTestCallback) => {
-    this.registerExclusion(this.suiteName, "skip", { description, cb })
+  public skip = () => {
+    // ensure all tests in this suite are registered as skip
+    // this.registerExclusion(this.suiteName, "skip")
   }
+
+  // public only = (description: string, cb: MicrowaveTestCallback) => {
+  //   this.registerExclusion(this.suiteName, "only", { description, cb })
+  // }
+
+  // public skip = (description: string, cb: MicrowaveTestCallback) => {
+  //   this.registerExclusion(this.suiteName, "skip", { description, cb })
+  // }
 
   public run = () => {
     this.isRegistered = true
