@@ -214,17 +214,20 @@ export class Microwave {
       const testsToRun = runOnly ? only : tests
 
       // start suite timer
-      // const testSuiteSummary = new TestSuiteSummary(suite.suiteName, order, tests.length)
-      const testSuiteSummary = new TestSuiteSummary(suite.suiteName, order, testsToRun.length)
+      const testSuiteSummary = new TestSuiteSummary(suite.suiteName, order, tests.length)
+      // const testSuiteSummary = new TestSuiteSummary(suite.suiteName, order, testsToRun.length)
 
-      if (testsToRun.length) {
+      // if (testsToRun.length) {
+      if (tests.length) {
         // set suite name on ctx
         ctx.__suite__ = suite.suiteName
         // run before hooks
         for (hook of before) await hook(ctx)
 
-        for (let testCaseOrder = 0; testCaseOrder < testsToRun.length; testCaseOrder++) {
-          const testCase = testsToRun[testCaseOrder]
+        // for (let testCaseOrder = 0; testCaseOrder < testsToRun.length; testCaseOrder++) {
+        for (let testCaseOrder = 0; testCaseOrder < tests.length; testCaseOrder++) {
+          // const testCase = testsToRun[testCaseOrder]
+          const testCase = tests[testCaseOrder]
           // start timer
           const testCaseSummary = new TestCaseSummary(testCaseOrder, testCase.description, suite.suiteName)
           let results = {
