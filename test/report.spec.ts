@@ -62,12 +62,18 @@ const sampleFailPassOnlyComboTests = {
   "test suite 4": { ...sampleFailingTests["test suite 4"] },
 }
 
+const samplePassAndFailComboTests = {
+  ...samplePassingTests,
+  "test suite 4": { ...sampleFailingTests["test suite 4"] },
+}
+
 type TestsSample =
   | typeof samplePassingTests
   | typeof sampleFailingTests
   | typeof sampleSkippedTests
   | typeof sampleOnlyTests
   | typeof sampleFailPassOnlyComboTests
+  | typeof samplePassAndFailComboTests
 
 function processTests(testsMapping: TestsSample, reportName = "summarize stats") {
   const report = new MicrowaveReport(reportName)
@@ -158,5 +164,16 @@ describe("MicrowaveReport", () => {
     expect(json.stats.failed).toBe(2)
     expect(json.stats.passed).toBe(1)
     expect(json.stats.skipped).toBe(7)
+  })
+
+  test("report calculates pass and fail stats correctly", () => {
+    const report = processTests(samplePassAndFailComboTests, "pass-and-fail")
+
+    const json = report.toJson()
+
+    expect(json.stats.total).toBe(10)
+    expect(json.stats.failed).toBe(2)
+    expect(json.stats.passed).toBe(8)
+    expect(json.stats.skipped).toBe(0)
   })
 })
