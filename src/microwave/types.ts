@@ -153,15 +153,17 @@ export interface IMicrowaveTimer {
   stopTimer: () => string | number
 }
 
+export type ITestCaseSummaryToProcess = {
+  e?: string
+  name?: string
+  status: TestCaseSummaryResults["status"]
+  retries?: number
+}
+
 export interface ITestCaseSummary {
   results: TestCaseSummaryResults
 
-  processTestCaseResults(testCaseResults: {
-    e?: string
-    name?: string
-    status: TestCaseSummaryResults["status"]
-    retries?: number
-  }): void
+  processTestCaseResults(testCaseResults: ITestCaseSummaryToProcess): void
   finalizeSummary(): void
   toJson(): TestCaseSummaryResults
 }
