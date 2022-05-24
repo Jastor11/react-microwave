@@ -3,6 +3,8 @@ import type {
   RegisterHook,
   RegisterExclusion,
   MicrowaveTestCallback,
+  MicrowaveSuiteTestCase,
+  // MicrowaveContext,
   MicrowaveHook,
   IMicrowaveSuite,
 } from "./types"
@@ -23,6 +25,8 @@ export class MicrowaveSuite implements IMicrowaveSuite {
     const microwaveSuite = new MicrowaveSuite(suiteName, registerTestCase, registerHook, registerExclusion)
     microwaveSuite.before.each = microwaveSuite.beforeEach
     microwaveSuite.after.each = microwaveSuite.afterEach
+    microwaveSuite.test.only = microwaveSuite.only
+    microwaveSuite.test.skip = microwaveSuite.skip
     return microwaveSuite
   }
 
@@ -38,8 +42,8 @@ export class MicrowaveSuite implements IMicrowaveSuite {
     this.registerExclusion = registerExclusion
   }
 
-  public test = (description: string, test: MicrowaveTestCallback) => {
-    this.registerTestCase(this.suiteName, { description, test })
+  public test: MicrowaveSuiteTestCase = (description: string, cb: MicrowaveTestCallback) => {
+    this.registerTestCase(this.suiteName, { description, cb })
   }
 
   public before: MicrowaveHook = (cb: MicrowaveTestCallback) => {
@@ -58,12 +62,12 @@ export class MicrowaveSuite implements IMicrowaveSuite {
     this.registerHook(this.suiteName, "afterEach", cb)
   }
 
-  public only = (description: string, test: MicrowaveTestCallback) => {
-    this.registerExclusion(this.suiteName, "only", { description, test })
+  public only = (description: string, cb: MicrowaveTestCallback) => {
+    this.registerExclusion(this.suiteName, "only", { description, cb })
   }
 
-  public skip = (description: string, test: MicrowaveTestCallback) => {
-    this.registerExclusion(this.suiteName, "skip", { description, test })
+  public skip = (description: string, cb: MicrowaveTestCallback) => {
+    this.registerExclusion(this.suiteName, "skip", { description, cb })
   }
 
   public run = () => {
