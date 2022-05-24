@@ -112,7 +112,8 @@ export class TestSuiteSummary implements ITestSuiteSummary {
     const testCase = testCaseSummary.toJson()
     this.summary.tests.push(testCase)
     this.summary.stats.passed += testCase.ok ? 1 : 0
-    this.summary.stats.failed += testCase.ok ? 0 : 1
+    // only count it as failed if it's not ok and it's not skipped
+    this.summary.stats.failed += testCase.ok ? 0 : testCase.status === "skipped" ? 0 : 1
     this.summary.stats.skipped += testCase.status === "skipped" ? 1 : 0
     this.summary.stats.ok = this.summary.stats.failed === 0
   }
