@@ -73,9 +73,9 @@ export class MicrowaveSuite implements IMicrowaveSuite {
     // this.registerExclusion(this.suiteName, "only")
   }
 
-  public skip = () => {
+  public skip = (cb: MicrowaveTestCallback) => {
     // ensure all tests in this suite are registered as skip
-    // this.registerExclusion(this.suiteName, "skip")
+    // this.registerExclusion(this.suiteName, "skip", cb)
   }
 
   // public only = (description: string, cb: MicrowaveTestCallback) => {

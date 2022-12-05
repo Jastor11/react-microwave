@@ -26,9 +26,11 @@ export class Assertion extends Error {
     super(opts.message ?? "")
     this.name = "Assertion"
     this.code = "ERR_ASSERTION"
+
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor)
     }
+
     this.details = opts?.details || false
     this.generated = !!opts?.generated
     this.operator = opts?.operator
