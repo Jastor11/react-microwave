@@ -39,7 +39,7 @@ export class Assertion extends Error {
   }
 }
 
-type Types = "string" | "number" | "boolean" | "object" | "undefined" | "function"
+export type Types = "string" | "number" | "boolean" | "object" | "undefined" | "function"
 
 export type Message = string | Error
 
